@@ -2,12 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+
+import * as dotenv from 'dotenv';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
-import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
-import { ItemsModule } from './items/items.module';
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import * as dotenv from 'dotenv';
+import { ItemsModule } from './items/items.module';
+import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
 
 dotenv.config();
 
@@ -23,10 +26,11 @@ dotenv.config();
       installSubscriptionHandlers: true,
     }),
     MongooseModule.forRoot(
-      process.env.MONGODB_URI ||
-        `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
+      `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
     ),
     ItemsModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
