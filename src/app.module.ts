@@ -21,8 +21,8 @@ dotenv.config();
       driver: ApolloDriver,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      // autoSchemaFile: 'schema.gql',
-      autoSchemaFile: true,
+      autoSchemaFile:
+        (process.env as unknown) === 'local' ? 'schema.gql' : true,
       transformSchema: (schema) => upperDirectiveTransformer(schema, 'upper'),
       installSubscriptionHandlers: true,
     }),
