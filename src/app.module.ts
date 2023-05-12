@@ -25,6 +25,7 @@ dotenv.config();
         (process.env as unknown) === 'local' ? 'schema.gql' : true,
       transformSchema: (schema) => upperDirectiveTransformer(schema, 'upper'),
       installSubscriptionHandlers: true,
+      introspection: process.env.NODE_ENV !== 'production',
     }),
     MongooseModule.forRoot(
       `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
