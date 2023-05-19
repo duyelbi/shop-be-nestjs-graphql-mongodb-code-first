@@ -1,10 +1,10 @@
 import { MongooseModule } from '@nestjs/mongoose';
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 
 import { User, UserSchema } from './entities/user.entity';
-import { AuthModule } from '../auth/auth.module';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { UsersService } from './users.service';
         schema: UserSchema,
       },
     ]),
-    forwardRef(() => AuthModule),
+    AuthModule,
   ],
   providers: [UsersResolver, UsersService],
   exports: [UsersService],

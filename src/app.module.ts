@@ -12,7 +12,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ItemsModule } from './items/items.module';
 import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
 import { UsersModule } from './users/users.module';
-// import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 dotenv.config();
 
@@ -35,9 +36,12 @@ dotenv.config();
     MongooseModule.forRoot(
       `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
     ),
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production',
+    }),
     ItemsModule,
     UsersModule,
-    // AuthModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
